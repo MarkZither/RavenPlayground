@@ -31,24 +31,6 @@ namespace RavenPlayground.Console
                 testSession.SaveChanges();
             }
 
-            try
-            {
-                IUrlClient urlClient = new UrlClient();
-                IProtocol protocol = new JsonProtocol();
-                string version = "2.2";
-                string apiKey = "v3N0Lx)RV7ef4XfkVEzaTQ((";
-                var stackyClient = new StackyClient(version, apiKey, Sites.StackOverflow, urlClient, protocol);
-                var questions = stackyClient.GetQuestions(QuestionSort.Activity, SortDirection.Descending, null, null, true, true, true, DateTime.Now.AddDays(-30), DateTime.Now.AddDays(-27), null, null, new string[] { "c#", "asp.net-core" });
-                foreach (var question in questions)
-                {
-                    System.Console.WriteLine(question.Title);
-                }
-            }
-            catch (Exception ex)
-            {
-                //this is failing, ignore for now
-            }
-
             var client = new StacManClient(key: "v3N0Lx)RV7ef4XfkVEzaTQ((", version: "2.2");
             var response = client.Questions.GetAll("stackoverflow",
             page: 1,

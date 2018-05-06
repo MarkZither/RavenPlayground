@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="4.0.3" />
     <PackageReference Include="RavenDB.Database" Version="2.5.25031" />
-    <PackageReference Include="Stacky" Version="1.1.2" />
     <PackageReference Include="StacMan" Version="1.1.2" />
     <PackageReference Include="System.Console" Version="4.3.1" />
   </ItemGroup>
