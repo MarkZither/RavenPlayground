@@ -1,6 +1,6 @@
 # RavenPlayground
 
-##How to run this demo
+## How to run this demo
 
 * [Download the server](https://ravendb.net/download)
 * Unzip the downloaded archive.
