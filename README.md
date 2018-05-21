@@ -20,3 +20,6 @@ If the certifcates have registered properly you should now be able to restart th
  - `Environment.GetEnvironmentVariable("stackAppsKey")` [Register an app](https://stackapps.com/apps/oauth/register)
  
  Run the console app, it will lead you through the rest.
+
+ ## Project Gutenberg Data
+ to download all English books in txt format run `wget -w 2 -m -H "http://www.gutenberg.org/robot/harvest?filetypes[]=txt&langs[]=en"` and [download the index file](https://www.gutenberg.org/cache/epub/feeds/rdf-files.tar.zip) and unzip and extract the tar to a directory `rdf-files` in the root of the gutenberg directory used in the console app.
