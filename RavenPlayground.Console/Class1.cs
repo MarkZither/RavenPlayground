@@ -113,8 +113,10 @@ namespace RavenPlayground.Console
                                 IGraph g = new Graph();
                                 IGraph h = new Graph();
 
+                                string parsedBookId = Path.GetFileNameWithoutExtension(entry.Name).Contains("-") ? Path.GetFileNameWithoutExtension(entry.Name).Substring(0, Path.GetFileNameWithoutExtension(entry.Name).IndexOf("-")) : Path.GetFileNameWithoutExtension(entry.Name);
+                                int bookId = Convert.ToInt32(parsedBookId);
                                 //Load using Filename
-                                FileLoader.Load(h, pGLoc + $"\\rdf-files\\cache\\epub\\{Path.GetFileNameWithoutExtension(entry.Name)}\\pg{Path.GetFileNameWithoutExtension(entry.Name)}.rdf");
+                                FileLoader.Load(h, pGLoc + $"\\rdf-files\\cache\\epub\\{parsedBookId}\\pg{parsedBookId}.rdf");
 
                                 TripleStore tstore = new TripleStore();
 
@@ -137,50 +139,40 @@ namespace RavenPlayground.Console
                                 var title = h.GetTriplesWithPredicate(new Uri("http://purl.org/dc/terms/title")).First().Nodes.ToList()[2].ToString();
                                 var titlestring = h.GetTriplesWithPredicate(new Uri("http://purl.org/dc/terms/title")).First().Nodes.FirstOrDefault();
 
-                                var creatornodes = h.GetTriplesWithPredicate(new Uri("http://purl.org/dc/terms/creator")).First().Nodes.ToList();
-                                var creatorName = creatornodes.ToList()[2].Graph.GetTriplesWithPredicate(new Uri("http://www.gutenberg.org/2009/pgterms/name")).First().Nodes.ToList()[2].ToString();
+                                //var creatornodes = h.GetTriplesWithPredicate(new Uri("http://purl.org/dc/terms/creator")).First().Nodes.ToList();
+                                var creatorName = h.GetTriplesWithPredicate(new Uri("http://www.gutenberg.org/2009/pgterms/name")).First().Nodes.ToList()[2].ToString();
 
                                 var languagenodes = h.GetTriplesWithPredicate(new Uri("http://purl.org/dc/terms/language")).First().Nodes;
                                 //var language = languagenodes.ToList()[2].Graph.GetTriplesWithPredicate(new Uri("http://www.w3.org/1999/02/22-rdf-syntax-ns#")).First().Nodes.ToList()[2].ToString();
 
-                                //Create a Parameterized String
-                                SparqlParameterizedString queryString = new SparqlParameterizedString();
-
-                                //Add a namespace declaration
-                                queryString.Namespaces.AddNamespace("dcterms", new Uri("http://purl.org/dc/terms/"));
-                                queryString.Namespaces.AddNamespace("rdf", new Uri("http://www.w3.org/1999/02/22-rdf-syntax-ns#"));
-
-                                //Set the SPARQL command
-                                //For more complex queries we can do this in multiple lines by using += on the
-                                //CommandText property
-                                //Note we can use @name style parameters here
-                                queryString.CommandText = "SELECT * WHERE { ?s dcterms:title @value }";
-
-                                //Inject a Value for the parameter
-                                queryString.SetUri("value", new Uri("http://purl.org/dc/terms/title"));
-
-                                //When we call ToString() we get the full command text with namespaces appended as PREFIX
-                                //declarations and any parameters replaced with their declared values
-                                System.Console.WriteLine(queryString.ToString());
-
-                                //We can turn this into a query by parsing it as in our previous example
-                                SparqlQueryParser parser = new SparqlQueryParser();
-                                SparqlQuery query = parser.ParseFromString(queryString);
                                 GutBook book = new GutBook()
                                 {
                                     Author = creatorName,
-                                    BookId = Convert.ToInt32(Path.GetFileNameWithoutExtension(entry.Name)),
+                                    BookId = bookId,
                                     Text = text,
                                     Title = title,
                                     Language = "en"
                                 };
-                                using (BulkInsertOperation bulkInsert = store.BulkInsert())
+                                var Session = store.OpenSession();
+                                var existingBook = from d in Session.Query<GutBook>()
+                                                      where d.BookId.Equals(bookId)
+                                                      select d;
+                                List<GutBook> gutBooks = Session
+                                    .Query<GutBook>()
+                                    .Where(x => x.BookId == bookId)
+                                    .ToList();
+                                if (gutBooks == null || gutBooks.Count().Equals(0))
                                 {
-                                    //foreach (var question in response.Data.Items)
-                                    //{
-                                    bulkInsert.Store(book);
-                                    //}
+                                    using (BulkInsertOperation bulkInsert = store.BulkInsert())
+                                    {
+                                        //foreach (var question in response.Data.Items)
+                                        //{
+                                        bulkInsert.Store(book);
+                                        //}
+                                    }
                                 }
+
+
                             }
                             catch (RdfParseException parseEx)
                             {
