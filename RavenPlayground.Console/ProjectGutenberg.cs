@@ -2,6 +2,7 @@
 using Raven.Client.Documents;
 using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Operations.Attachments;
 using RavenPlayground.Console.Models;
 using System;
 using System.Collections.Generic;
@@ -32,11 +33,17 @@ namespace RavenPlayground.Console
                     {
                         if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
                         {
+                            
                             FileInfo file = new FileInfo(entry.FullName);
                             unzippedEntryStream = entry.Open(); // .Open will return a stream
                                                                 // Process entry data here
+                            Stream newStream = new MemoryStream();
+                            unzippedEntryStream.CopyTo(newStream);
                             StreamReader reader = new StreamReader(unzippedEntryStream);
                             string text = reader.ReadToEnd();
+                            reader.Close();
+                            reader.Dispose();
+                            
                             try
                             {
                                 IGraph g = new Graph();
@@ -94,14 +101,27 @@ namespace RavenPlayground.Console
                                 {
                                     using (BulkInsertOperation bulkInsert = store.BulkInsert())
                                     {
-                                        //foreach (var question in response.Data.Items)
-                                        //{
                                         bulkInsert.Store(book);
-                                        //}
                                     }
                                 }
-
-
+                                else
+                                {
+                                    // do a patch
+                                    string id = Session.Advanced.GetDocumentId(gutBooks.First());
+                                    GutBook oldBook = Session.Load<GutBook>(id);
+                                    oldBook.Version = oldBook.Version + 0.1;
+                                    AttachmentName[] attachmentNames = Session.Advanced.Attachments.GetNames(oldBook);
+                                    foreach (AttachmentName attachmentName in attachmentNames)
+                                    {
+                                        string name = attachmentName.Name;
+                                        string contentType = attachmentName.ContentType;
+                                        string hash = attachmentName.Hash;
+                                        long size = attachmentName.Size;
+                                    }
+                                    newStream.Position = 0;
+                                    Session.Advanced.Attachments.Store(id, $"{oldBook.BookId}.txt", newStream, "text/plain");
+                                    Session.SaveChanges();
+                                }
                             }
                             catch (RdfParseException parseEx)
                             {
@@ -127,6 +147,14 @@ namespace RavenPlayground.Console
             new GutBook_ByTitleAuthorAndBody().Execute(store);
         }
 
+        /// <summary>
+        /// search can look like this
+        /// from index 'GutBook/ByTitleAuthorAndBody'
+        /// where search(TitleAuthorAndBody , '*Lucius* Annaeus*', and)
+        ///  or 
+        /// from index 'GutBook/ByTitleAuthorAndBody'
+        /// where search(TitleAuthorAndBody , '*Lucius* Annaeus*', or)
+        /// </summary>
         public class GutBook_ByTitleAuthorAndBody : AbstractIndexCreationTask<GutBook>
         {
             public class Result
