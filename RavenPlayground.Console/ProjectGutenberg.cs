@@ -142,6 +142,29 @@ namespace RavenPlayground.Console
             var something = "";
         }
 
+        internal static IList<GutBook> Query(IDocumentStore store, string keywords, bool isOr)
+        {
+            using (var session = store.OpenSession())
+            {
+                IList<GutBook> results;
+                if (isOr)
+                {
+                    results = session
+                        .Query<GutBook, GutBook_ByTitleAuthorAndBody>()
+                        .Search(x => x.Query, keywords, options: SearchOptions.Or)
+                        .ToList();
+                }
+                else
+                {
+                    results = session
+                        .Query<GutBook, GutBook_ByTitleAuthorAndBody>()
+                        .Search(x => x.Query, keywords, options: SearchOptions.And)
+                        .ToList();
+                }
+                return results;
+            }
+        }
+
         public static void AddIndexesAndAnalyzers(IDocumentStore store)
         {
             new GutBook_ByTitleAuthorAndBody().Execute(store);
@@ -150,10 +173,16 @@ namespace RavenPlayground.Console
         /// <summary>
         /// search can look like this
         /// from index 'GutBook/ByTitleAuthorAndBody'
-        /// where search(TitleAuthorAndBody , '*Lucius* Annaeus*', and)
+        /// where search(TitleAuthorAndBody, '*Lucius* Annaeus*', and)
         ///  or 
         /// from index 'GutBook/ByTitleAuthorAndBody'
-        /// where search(TitleAuthorAndBody , '*Lucius* Annaeus*', or)
+        /// where search(TitleAuthorAndBody, '*Lucius* Annaeus*', or)
+        /// or
+        /// from index 'GutBook/ByTitleAuthorAndBody'
+        /// where search(Query, '*Lucius* Annaeus*', and)
+        ///  or 
+        /// from index 'GutBook/ByTitleAuthorAndBody'
+        /// where search(Query, '*Lucius* Annaeus*', or)
         /// </summary>
         public class GutBook_ByTitleAuthorAndBody : AbstractIndexCreationTask<GutBook>
         {
@@ -167,10 +196,17 @@ namespace RavenPlayground.Console
                 Map = gutBooks => from gutBook in gutBooks
                                   select new
                                   {
+                                      Query = new object[]
+                            {
+                                gutBook.Text,
+                                gutBook.Author,
+                                gutBook.Text,
+                            },
                                       TitleAuthorAndBody = gutBook.Title + " " + gutBook.Author + " " + gutBook.Text
                                   };
 
                 Analyze("TitleAuthorAndBody", typeof(StandardAnalyzer).AssemblyQualifiedName);
+                Analyze("Query", typeof(StandardAnalyzer).AssemblyQualifiedName);
             }
         }
     }

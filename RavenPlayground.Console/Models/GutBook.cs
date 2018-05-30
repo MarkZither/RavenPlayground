@@ -15,5 +15,6 @@ namespace RavenPlayground.Console.Models
         public string Language { get; set; }
         public string Text { get; set; }
         public double Version { get; set; }
+        public string Query { get; set; }
     }
 }

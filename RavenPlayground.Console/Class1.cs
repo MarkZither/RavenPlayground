@@ -22,6 +22,7 @@ using VDS.RDF.Query.Datasets;
 using VDS.RDF.Query;
 using VDS.RDF.Writing.Formatting;
 using RavenPlayground.Console.Models;
+using Newtonsoft.Json;
 
 namespace RavenPlayground.Console
 {
@@ -49,9 +50,9 @@ namespace RavenPlayground.Console
             System.Console.WriteLine("To get some data from stackoverflow in the database press S");
             System.Console.WriteLine("To create a full text index over the stackoverflow questions press I");
             System.Console.WriteLine("To index project gutenberg data press G");
-            System.Console.WriteLine("To create a full text index over the project gutenberg data press P");
+            System.Console.WriteLine("To query the GutBook index press Q");
             System.Console.WriteLine("To add a test record press T");
-            
+
             var key = System.Console.ReadKey();
             System.Console.WriteLine();
             if (key.Key.Equals(ConsoleKey.T))
@@ -87,6 +88,24 @@ namespace RavenPlayground.Console
                 {
                     ProjectGutenberg.AddIndexesAndAnalyzers(store);
                 }
+            }
+            else if (key.Key.Equals(ConsoleKey.Q))
+            {
+                System.Console.WriteLine("What do you want to search for? (format like *something* *therthing somethingel*");
+                var keywords = System.Console.ReadLine();
+                System.Console.WriteLine("Press O for and OR search or A for an AND");
+                key = System.Console.ReadKey();
+                System.Console.WriteLine();
+                IList<GutBook> gutBooks = new List<GutBook>();
+                if (key.Key.Equals(ConsoleKey.O))
+                {
+                    gutBooks = ProjectGutenberg.Query(store, keywords, true);
+                }
+                else if(key.Key.Equals(ConsoleKey.A))
+                {
+                    gutBooks = ProjectGutenberg.Query(store, keywords, false);
+                }
+                System.Console.WriteLine(JsonConvert.SerializeObject(gutBooks.Select(x => x.BookId).ToList()));
             }
             else
             {
