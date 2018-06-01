@@ -45,73 +45,76 @@ namespace RavenPlayground.Console
                 Certificate = new System.Security.Cryptography.X509Certificates.X509Certificate2(certLocation, certPassword),
                 Database = databaseName
             }.Initialize();
+			bool quit = false;
+			while (!quit)
+			{
+				System.Console.WriteLine("What do you want to do?");
+				System.Console.WriteLine("To get some data from stackoverflow in the database press S");
+				System.Console.WriteLine("To create a full text index over the stackoverflow questions press I");
+				System.Console.WriteLine("To add data or an index to the Project Gutenberg data press G");
+				System.Console.WriteLine("To query the GutBook index press Q");
+				System.Console.WriteLine("To add a test record press T");
 
-            System.Console.WriteLine("What do you want to do?");
-            System.Console.WriteLine("To get some data from stackoverflow in the database press S");
-            System.Console.WriteLine("To create a full text index over the stackoverflow questions press I");
-            System.Console.WriteLine("To index project gutenberg data press G");
-            System.Console.WriteLine("To query the GutBook index press Q");
-            System.Console.WriteLine("To add a test record press T");
 
-            var key = System.Console.ReadKey();
-            System.Console.WriteLine();
-            if (key.Key.Equals(ConsoleKey.T))
-            {
-                AddTestRecord(store);
-            }
-            else if (key.Key.Equals(ConsoleKey.S))
-            {
-                System.Console.WriteLine("How many pages (100 questions per page) of data do you want?");
-                int.TryParse(System.Console.ReadLine(), out int pages);
-                StackOverflow.AddData(store, pages);
-            }
-            else if (key.Key.Equals(ConsoleKey.I))
-            {
-                StackOverflow.AddIndexesAndAnalyzers(store);
-            }
-            else if (key.Key.Equals(ConsoleKey.G))
-            {
-                System.Console.WriteLine("Press D to get data and I to add index");
-                key = System.Console.ReadKey();
-                System.Console.WriteLine();
-                if (key.Key.Equals(ConsoleKey.D))
-                {
-                    System.Console.WriteLine("Where is the Project Gutenberg root folder? (Default D:\\gut)");
-                    string PGLoc = System.Console.ReadLine();
-                    if (string.IsNullOrEmpty(PGLoc))
-                    {
-                        PGLoc = "D:\\gut";
-                    }
-                    ProjectGutenberg.AddData(store, PGLoc);
-                }
-                else if (key.Key.Equals(ConsoleKey.I))
-                {
-                    ProjectGutenberg.AddIndexesAndAnalyzers(store);
-                }
-            }
-            else if (key.Key.Equals(ConsoleKey.Q))
-            {
-                System.Console.WriteLine("What do you want to search for? (format like *something* *therthing somethingel*");
-                var keywords = System.Console.ReadLine();
-                System.Console.WriteLine("Press O for and OR search or A for an AND");
-                key = System.Console.ReadKey();
-                System.Console.WriteLine();
-                IList<GutBook> gutBooks = new List<GutBook>();
-                if (key.Key.Equals(ConsoleKey.O))
-                {
-                    gutBooks = ProjectGutenberg.Query(store, keywords, true);
-                }
-                else if(key.Key.Equals(ConsoleKey.A))
-                {
-                    gutBooks = ProjectGutenberg.Query(store, keywords, false);
-                }
-                System.Console.WriteLine(JsonConvert.SerializeObject(gutBooks.Select(x => x.BookId).ToList()));
-            }
-            else
-            {
-                System.Console.WriteLine("try again");
-            }
-
+				var key = System.Console.ReadKey();
+				System.Console.WriteLine();
+				if (key.Key.Equals(ConsoleKey.T))
+				{
+					AddTestRecord(store);
+				}
+				else if (key.Key.Equals(ConsoleKey.S))
+				{
+					System.Console.WriteLine("How many pages (100 questions per page) of data do you want?");
+					int.TryParse(System.Console.ReadLine(), out int pages);
+					StackOverflow.AddData(store, pages);
+				}
+				else if (key.Key.Equals(ConsoleKey.I))
+				{
+					StackOverflow.AddIndexesAndAnalyzers(store);
+				}
+				else if (key.Key.Equals(ConsoleKey.G))
+				{
+					System.Console.WriteLine("Press D to get data and I to add index");
+					key = System.Console.ReadKey();
+					System.Console.WriteLine();
+					if (key.Key.Equals(ConsoleKey.D))
+					{
+						System.Console.WriteLine("Where is the Project Gutenberg root folder? (Default D:\\gut)");
+						string PGLoc = System.Console.ReadLine();
+						if (string.IsNullOrEmpty(PGLoc))
+						{
+							PGLoc = "D:\\gut";
+						}
+						ProjectGutenberg.AddData(store, PGLoc);
+					}
+					else if (key.Key.Equals(ConsoleKey.I))
+					{
+						ProjectGutenberg.AddIndexesAndAnalyzers(store);
+					}
+				}
+				else if (key.Key.Equals(ConsoleKey.Q))
+				{
+					System.Console.WriteLine("What do you want to search for? (format like *something* *therthing somethingel*");
+					var keywords = System.Console.ReadLine();
+					System.Console.WriteLine("Press O for and OR search or A for an AND");
+					key = System.Console.ReadKey();
+					System.Console.WriteLine();
+					IList<GutBook> gutBooks = new List<GutBook>();
+					if (key.Key.Equals(ConsoleKey.O))
+					{
+						gutBooks = ProjectGutenberg.Query(store, keywords, true);
+					}
+					else if (key.Key.Equals(ConsoleKey.A))
+					{
+						gutBooks = ProjectGutenberg.Query(store, keywords, false);
+					}
+					System.Console.WriteLine(JsonConvert.SerializeObject(gutBooks.Select(x => x.BookId).ToList()));
+				}
+				else
+				{
+					System.Console.WriteLine("try again");
+				}
+			}
             store.Dispose();
             System.Console.WriteLine("Press any key to exit");
             System.Console.ReadKey();
