@@ -5,23 +5,13 @@ using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
 using Raven.Client.Documents.Session;
-using StackExchange.StacMan;
 using System.Linq;
 using System;
 using System.Net;
 using System.Security;
-using System.Threading;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
 using System.Collections.Generic;
-using ICSharpCode.SharpZipLib.Zip;
-using VDS.RDF;
-using VDS.RDF.Parsing;
-using VDS.RDF.Query.Datasets;
-using VDS.RDF.Query;
-using VDS.RDF.Writing.Formatting;
-using RavenPlayground.Console.Models;
+using RavenPlayground.Lib.Models;
+using RavenPlayground.Lib;
 using Newtonsoft.Json;
 
 namespace RavenPlayground.Console

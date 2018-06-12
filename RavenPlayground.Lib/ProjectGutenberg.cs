@@ -3,7 +3,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.BulkInsert;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Attachments;
-using RavenPlayground.Console.Models;
+using RavenPlayground.Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,7 @@ using VDS.RDF.Query;
 using VDS.RDF.Query.Datasets;
 using VDS.RDF.Writing.Formatting;
 
-namespace RavenPlayground.Console
+namespace RavenPlayground.Lib
 {
     public class ProjectGutenberg
     {
@@ -142,7 +142,7 @@ namespace RavenPlayground.Console
             var something = "";
         }
 
-        internal static IList<GutBook> Query(IDocumentStore store, string keywords, bool isOr)
+        public static IList<GutBook> Query(IDocumentStore store, string keywords, bool isOr)
         {
             using (var session = store.OpenSession())
             {

@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  ravenplayground.web:
+    image: ${DOCKER_REGISTRY}ravenplaygroundweb
+    build:
+      context: .
+      dockerfile: RavenPlayground.Web\Dockerfile
+
+  webapplication1:
+    image: ${DOCKER_REGISTRY}webapplication1
+    build:
+      context: .
+      dockerfile: ..\WebApplication1\Dockerfile
+
+
+  webapplication2:
+    image: ${DOCKER_REGISTRY}webapplication2
+    build:
+      context: .
+      dockerfile: WebApplication2\Dockerfile
+
+
+  ravenplayground.aurelia:
+    image: ${DOCKER_REGISTRY}ravenplaygroundaurelia
+    build:
+      context: .
+      dockerfile: RavenPlayground.Aurelia\Dockerfile
+

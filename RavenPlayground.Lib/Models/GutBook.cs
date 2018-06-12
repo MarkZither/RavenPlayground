@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RavenPlayground.Console.Models
+namespace RavenPlayground.Lib.Models
 {
 
     public class GutBook

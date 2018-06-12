@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RavenPlayground.Console.Models
+namespace RavenPlayground.Lib.Models
 {
 
-    internal class Employee
+    public class Employee
     {
         public string FirstName { get; set; }
 

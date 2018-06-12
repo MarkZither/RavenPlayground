@@ -1,0 +1,21 @@
+<template>
+  <require from="bootstrap/dist/css/bootstrap.css"></require>
+  <require from="./styles.css"></require>
+  <require from="./book-list"></require>
+
+  <nav class="navbar navbar-light bg-light fixed-top" role="navigation">
+    <a class="navbar-brand" href="#">
+      <i class="fa fa-user"></i>
+      <span>Books</span>
+    </a>
+  </nav>
+
+  <loading-indicator loading.bind="router.isNavigating || api.isRequesting"></loading-indicator>
+
+  <div class="container">
+    <div class="row">
+      <book-list class="col-md-4"></book-list>
+      <router-view class="col-md-8"></router-view>
+    </div>
+  </div>
+</template>

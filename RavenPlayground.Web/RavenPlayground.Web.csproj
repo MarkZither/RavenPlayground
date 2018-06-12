@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>06962fbe-733d-420d-8007-db1e42e3b5e2</UserSecretsId>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="src\resources\elements\nprogress\**" />
+    <Content Remove="src\resources\elements\nprogress\**" />
+    <EmbeddedResource Remove="src\resources\elements\nprogress\**" />
+    <None Remove="src\resources\elements\nprogress\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="src\book-detail.ts" />
+    <None Remove="src\book-list.ts" />
+    <None Remove="src\loading-indicator.ts" />
+    <None Remove="src\messages.ts" />
+    <None Remove="src\no-selection.ts" />
+    <None Remove="src\utility.ts" />
+    <None Remove="src\web-api.ts" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv"
+Version="2.1.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <TypeScriptCompile Include="src\book-detail.ts" />
+    <TypeScriptCompile Include="src\book-list.ts" />
+    <TypeScriptCompile Include="src\resources\elements\loading-indicator.ts" />
+    <TypeScriptCompile Include="src\messages.ts" />
+    <TypeScriptCompile Include="src\no-selection.ts" />
+    <TypeScriptCompile Include="src\utility.ts" />
+    <TypeScriptCompile Include="src\web-api.ts" />
+  </ItemGroup>
+
+</Project>
