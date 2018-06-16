@@ -21,19 +21,20 @@
     <None Remove="src\loading-indicator.ts" />
     <None Remove="src\messages.ts" />
     <None Remove="src\no-selection.ts" />
+    <None Remove="src\number-format.ts" />
     <None Remove="src\utility.ts" />
     <None Remove="src\web-api.ts" />
   </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv"
-Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv" Version="2.1.0" />
   </ItemGroup>
   
   <ItemGroup>
     <TypeScriptCompile Include="src\book-detail.ts" />
     <TypeScriptCompile Include="src\book-list.ts" />
+    <TypeScriptCompile Include="src\number-format.ts" />
     <TypeScriptCompile Include="src\resources\elements\loading-indicator.ts" />
     <TypeScriptCompile Include="src\messages.ts" />
     <TypeScriptCompile Include="src\no-selection.ts" />

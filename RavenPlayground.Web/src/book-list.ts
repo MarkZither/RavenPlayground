@@ -1,6 +1,7 @@
 ﻿import { EventAggregator } from 'aurelia-event-aggregator';
 import { WebAPI } from './web-api';
 import { BookUpdated, BookViewed } from './messages';
+import { Book } from './book-detail';
 import { inject } from 'aurelia-framework';
 
 @inject(WebAPI, EventAggregator)
@@ -11,9 +12,9 @@ export class BookList {
   constructor(private api: WebAPI, ea: EventAggregator) {
     ea.subscribe(BookViewed, msg => this.select(msg.book));
     ea.subscribe(BookUpdated, msg => {
-      let id = msg.contact.id;
-      let found = this.books.find(x => x.id == id);
-      Object.assign(found, msg.contact);
+      let id = msg.book.bookId;
+      let found = this.books.find(x => x.bookId == id);
+      Object.assign(found, msg.book);
     });}
 
   created() {
@@ -21,7 +22,21 @@ export class BookList {
   }
 
   select(book) {
-    this.selectedId = book.id;
+    this.selectedId = book.bookId;
     return true;
+  }
+
+  search() {
+    this.api.searchBooks("sdfsdf").then(books => {
+      this.books = books;
+      //selectedId = 0;
+      //this.routeConfig.navModel.setTitle(this.book.title);
+      //this.originalBook = JSON.parse(JSON.stringify(this.book));
+      //this.ea.publish(new BookUpdated(this.book));
+    });
+  }
+
+  get canSearch() {
+    return !this.api.isRequesting;
   }
 }

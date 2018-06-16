@@ -19,7 +19,6 @@ namespace RavenPlayground.Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-      .UseLibuv()
                 .UseStartup<Startup>();
     }
 }

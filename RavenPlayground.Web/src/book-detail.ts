@@ -4,10 +4,11 @@ import { WebAPI } from './web-api';
 import { BookUpdated, BookViewed } from './messages';
 import { areEqual } from './utility';
 
-interface Book {
-  firstName: string;
-  lastName: string;
-  email: string;
+export interface Book {
+  bookId: number;
+  title: string;
+  author: string;
+  language: string;
 }
 
 @inject(WebAPI, EventAggregator)
@@ -21,22 +22,22 @@ export class BookDetail {
   activate(params, routeConfig) {
     this.routeConfig = routeConfig;
 
-    return this.api.getBookDetails(params.id).then(book => {
+    return this.api.getBookDetails(params.bookId).then(book => {
       this.book = <Book>book;
-      this.routeConfig.navModel.setTitle(this.book.firstName);
+      this.routeConfig.navModel.setTitle(this.book.title);
       this.originalBook = JSON.parse(JSON.stringify(this.book));
       this.ea.publish(new BookViewed(this.book));
     });
   }
 
   get canSave() {
-    return this.book.firstName && this.book.lastName && !this.api.isRequesting;
+    return this.book.title && this.book.author && this.book.language && this.book.bookId && !this.api.isRequesting;
   }
 
   save() {
     this.api.saveBook(this.book).then(book => {
       this.book = <Book>book;
-      this.routeConfig.navModel.setTitle(this.book.firstName);
+      this.routeConfig.navModel.setTitle(this.book.title);
       this.originalBook = JSON.parse(JSON.stringify(this.book));
       this.ea.publish(new BookUpdated(this.book));
     });

@@ -10,7 +10,7 @@ export class App {
     config.title = 'Books';
     config.map([
       { route: '', moduleId: PLATFORM.moduleName('no-selection'), title: 'Select' },
-      { route: 'books/:id', moduleId: PLATFORM.moduleName('book-detail'), name: 'books' }
+      { route: 'books/:bookId', moduleId: PLATFORM.moduleName('book-detail'), name: 'books' }
     ]);
 
     this.router = router;
