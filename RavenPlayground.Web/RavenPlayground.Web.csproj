@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="src\book-content.ts" />
     <None Remove="src\book-detail.ts" />
     <None Remove="src\book-list.ts" />
     <None Remove="src\loading-indicator.ts" />
@@ -32,6 +33,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <TypeScriptCompile Include="src\book-content.ts" />
     <TypeScriptCompile Include="src\book-detail.ts" />
     <TypeScriptCompile Include="src\book-list.ts" />
     <TypeScriptCompile Include="src\number-format.ts" />
