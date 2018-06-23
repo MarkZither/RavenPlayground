@@ -35,7 +35,7 @@
         </div>
       </form>
       <div>
-        <a route-href="route: book; params.bind: {bookId:1}"  class="btn btn-success float-left">
+        <a route-href="route: book; params.bind: {bookId:book.bookId}"  class="btn btn-success float-left">
           Read
         </a>
         <button class="btn btn-success float-right" click.delegate="save()" disabled.bind="!canSave">Save</button>
