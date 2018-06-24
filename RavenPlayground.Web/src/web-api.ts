@@ -107,18 +107,20 @@ export class WebAPI {
         httpClient.fetch('GutBook')
           .then(response => response.json())
           .then(data => {
-            console.log(data.description);
+            console.log(data[0].title);
+            books = data;
+            let results = books.map(x => {
+              //let results = books.map(x => {
+              return {
+                bookId: x.bookId,
+                title: x.title,
+                author: x.author,
+                language: x.language
+              }
+            });
+            resolve(results);
+            this.isRequesting = false;
           });
-        let results = books.map(x => {
-          return {
-            bookId: x.bookId,
-            title: x.title,
-            author: x.author,
-            language: x.language
-          }
-        });
-        resolve(results);
-        this.isRequesting = false;
       }, latency);
     });
   }
