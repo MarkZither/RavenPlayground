@@ -164,6 +164,21 @@ namespace RavenPlayground.Lib
             var something = "";
         }
 
+        public static IList<GutBook> Get(IDocumentStore store, int count)
+        {
+            using (var session = store.OpenSession())
+            {
+                IList<GutBook> results;
+
+                    results = session
+                        .Query<GutBook, GutBook_ByTitleAuthorAndBody>()
+                        .Take(count)
+                        .ToList();
+
+                return results;
+            }
+        }
+
         public static IList<GutBook> Query(IDocumentStore store, string keywords, bool isOr)
         {
             using (var session = store.OpenSession())
