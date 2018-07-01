@@ -49,13 +49,6 @@ namespace RavenPlayground.Web.Controllers
       return new GutBook() { BookId = 1, Author = "mark", Language = "en", Title = "a great book" };
     }
 
-    // GET: api/GutBook/keywords
-    [HttpGet("{id}", Name = "Get")]
-    public GutBook Get(string id)
-    {
-      return new GutBook() { BookId = 1, Author = "mark", Language = "en", Title = "a great book" };
-    }
-
     // POST: api/GutBook
     [HttpPost]
     public void Post([FromBody] string value)

@@ -7,7 +7,7 @@ import { inject } from 'aurelia-framework';
 @inject(WebAPI, EventAggregator)
 export class BookList {
   books;
-  selectedId = 0;
+ selectedId = 0;
 
   constructor(private api: WebAPI, ea: EventAggregator) {
     ea.subscribe(BookViewed, msg => this.select(msg.book));
@@ -26,8 +26,8 @@ export class BookList {
     return true;
   }
 
-  search() {
-    this.api.searchBooks("sdfsdf").then(books => {
+  search(keywords) {
+   this.api.searchBooks(keywords).then(books => {
       this.books = books;
       //selectedId = 0;
       //this.routeConfig.navModel.setTitle(this.book.title);

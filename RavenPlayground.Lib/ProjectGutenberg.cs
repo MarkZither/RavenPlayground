@@ -173,6 +173,13 @@ namespace RavenPlayground.Lib
                     results = session
                         .Query<GutBook, GutBook_ByTitleAuthorAndBody>()
                         .Take(count)
+                        .Select(x => new GutBook()
+                        {
+                            BookId = x.BookId,
+                            Author = x.Author,
+                            Title = x.Title,
+                            Version = x.Version
+                        })
                         .ToList();
 
                 return results;
@@ -189,6 +196,13 @@ namespace RavenPlayground.Lib
                     results = session
                         .Query<GutBook, GutBook_ByTitleAuthorAndBody>()
                         .Search(x => x.Query, keywords, options: SearchOptions.Or)
+                        .Select(x => new GutBook()
+                        {
+                            BookId = x.BookId,
+                            Author = x.Author,
+                            Title = x.Title,
+                            Version = x.Version
+                        })
                         .ToList();
                 }
                 else
@@ -196,6 +210,13 @@ namespace RavenPlayground.Lib
                     results = session
                         .Query<GutBook, GutBook_ByTitleAuthorAndBody>()
                         .Search(x => x.Query, keywords, options: SearchOptions.And)
+                        .Select(x => new GutBook()
+                        {
+                            BookId = x.BookId,
+                            Author = x.Author,
+                            Title = x.Title,
+                            Version = x.Version
+                        })
                         .ToList();
                 }
                 return results;
