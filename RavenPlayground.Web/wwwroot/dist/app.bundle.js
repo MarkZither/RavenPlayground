@@ -63,7 +63,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f8b712c71f94022bd4b7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "cbbdc5ef97fe800bebd6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -2246,9 +2246,9 @@ eval("module.exports = \"<template>\\r\\n  <div class=\\\"contact-list\\\">\\r\\
 /***/ }),
 
 /***/ "bootstrap/dist/css/bootstrap.css":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/bootstrap/dist/css/bootstrap.css ***!
-  \*********************************************************************************/
+/*!*******************************************************!*\
+  !*** ./node_modules/bootstrap/dist/css/bootstrap.css ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
