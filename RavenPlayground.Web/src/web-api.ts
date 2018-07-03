@@ -3,6 +3,13 @@
 let latency = 200;
 let id = 0;
 
+export interface SearchParameters {
+	keywords: string;
+	page: string;
+	pageSize: string;
+	isOrSearch: boolean;
+}
+
 function getId() {
   return ++id;
 }
